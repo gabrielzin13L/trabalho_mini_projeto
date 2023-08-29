@@ -1,0 +1,42 @@
+import PySimpleGUI as sg
+
+def calculate_mru(values):
+    if values['-CHOICE-'] == 'Tempo':
+        distancia = float(values['-DISTANCIA-'])
+        velocidade = float(values['-VELOCIDADE-'])
+        tempo = distancia / velocidade
+        return f"O tempo é: {tempo} segundos"
+
+    elif values['-CHOICE-'] == 'Velocidade':
+        distancia = float(values['-DISTANCIA-'])
+        tempo = float(values['-TEMPO-'])
+        velocidade = distancia / tempo
+        return f"A velocidade é: {velocidade} m/s"
+
+    elif values['-CHOICE-'] == 'Distancia':
+        velocidade = float(values['-VELOCIDADE-'])
+        tempo = float(values['-TEMPO-'])
+        distancia = velocidade * tempo
+        return f"A distância é: {distancia} metros"
+
+layout = [
+    [sg.Text("Escolha o que deseja calcular:")],
+    [sg.Radio('Tempo', '-CHOICE-', default=True), sg.Radio('Velocidade', '-CHOICE-'), sg.Radio('Distancia', '-CHOICE-')],
+    [sg.Text("Distância:"), sg.InputText(key='-DISTANCIA-')],
+    [sg.Text("Velocidade:"), sg.InputText(key='-VELOCIDADE-')],
+    [sg.Text("Tempo:"), sg.InputText(key='-TEMPO-')],
+    [sg.Button('Calcular'), sg.Button('Sair')],
+    [sg.Text("", size=(30, 2), key='-RESULT-')]
+]
+
+window = sg.Window('Calculadora de MRU', layout)
+
+while True:
+    event, values = window.read()
+    if event == sg.WIN_CLOSED or event == 'Sair':
+        break
+    if event == 'Calcular':
+        result = calculate_mru(values)
+        window['-RESULT-'].update(result)
+
+window.close()
